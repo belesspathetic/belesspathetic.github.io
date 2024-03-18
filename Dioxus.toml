@@ -8,7 +8,7 @@ name = "Resume"
 default_platform = "web"
 
 # `build` & `serve` dist path
-out_dir = "docs"
+out_dir = "dist"
 
 # Resource (public) file folder
 asset_dir = "public"
