@@ -34,6 +34,7 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.1
       with:
+        token: ${{ secrets.WORKFLOW_SECRET }}
         branch: gh-pages
-        folder: dist
+        folder: dist  # Укажите папку с вашим собранным проектом
         clean: true
