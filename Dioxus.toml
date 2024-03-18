@@ -14,7 +14,7 @@ out_dir = "dist"
 asset_dir = "public"
 
 [web.app]
-base_path = "belesspathetic.github.io"
+base_path = "https://github.com/belesspathetic/belesspathetic.github.io"
 
 # HTML title tag content
 title = "Resume"
