@@ -1,62 +1,49 @@
 name: Build and Deploy
 
-inputs:
-  buildMode:
-    description: "Build projects using different modes [default: 'release']"
-    required: true
-    default: "release"
-  toolchain:
-    description: "Build projects using a different rust toolchain [default: 'stable']"
-    required: true
-    default: "stable"
-  outDirectory:
-    description: "The `out_dir` property configured in Dioxus.toml [default: 'dist']"
-    required: true
-    default: "dist"
-  rootPath:
-    description: "Source code root path [default: '.']"
-    required: true
-    default: "."
-
 on:
   push:
     branches:
       - main
 
+env:
+  BUILD_MODE: "release"
+  TOOLCHAIN: "stable"
+  OUT_DIRECTORY: "dist"
+  ROOT_PATH: "."
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
 
-    - name: Install Rust toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        target: wasm32-unknown-unknown
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
 
-    - name: Install dioxus-cli
-      run: cargo install dioxus-cli
+      - name: Install dioxus-cli
+        run: cargo install dioxus-cli
 
-    - name: Build project
-      run: |
-        dx build --release
+      - name: Build project
+        run: |
+          dx build --release
 
-    - name: Copy index.html to 404.html
-      run: cd ${{ inputs.rootPath }} && cp ./${{ inputs.outDirectory }}/index.html ./${{ inputs.outDirectory }}/404.html
+      - name: Copy index.html to 404.html
+        run: cd $ROOT_PATH && cp ./$OUT_DIRECTORY/index.html ./$OUT_DIRECTORY/404.html
         
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.1
-      with:
-        token: ${{ secrets.WORKFLOW_SECRET }}
-        branch: gh-pages
-        folder: ${{ inputs.rootPath }}/${{ inputs.outDirectory }}
-        clean: true
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          token: ${{ secrets.WORKFLOW_SECRET }}
+          branch: gh-pages
+          folder: $ROOT_PATH/$OUT_DIRECTORY
+          clean: true
