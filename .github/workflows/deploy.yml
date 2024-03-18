@@ -30,6 +30,9 @@ jobs:
     - name: Build project
       run: |
         dx build --release
+
+    - name: Serve site locally
+      run: dx serve --open
         
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.1
