@@ -31,13 +31,13 @@ jobs:
       run: |
         dx build --release
 
-    - name: Serve site locally
-      run: dx serve --open
+    - name: Copy index.html to 404.html
+      run: cp ./dist/index.html ./dist/404.html
         
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.1
       with:
         token: ${{ secrets.WORKFLOW_SECRET }}
         branch: gh-pages
-        folder: dist  # Укажите папку с вашим собранным проектом
+        folder: ./dist
         clean: true
